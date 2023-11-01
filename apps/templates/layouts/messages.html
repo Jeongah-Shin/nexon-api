@@ -1,0 +1,25 @@
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div id="messages" class="row messages">
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                    {% if category == 'success' %}
+                        <span>😀</span>
+                    {% elif category == 'danger' %}
+                        <span>😧</span>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
+
+<script type="text/javascript">
+
+  $( '.messages' ).click( function() {
+    $(this).hide();
+  } );
+
+</script>

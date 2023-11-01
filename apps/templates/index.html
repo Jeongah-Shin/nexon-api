@@ -1,0 +1,97 @@
+{% extends 'layouts/standard.html' %}
+
+{% block title %}낯선대학y6{% endblock %}
+
+{% block MetaTag %}
+<meta name="title" content="낯선대학y6">
+<meta name="description" content="Hi, Stranger!">
+<meta name="author" content="낯선대학y6">
+<meta name="robots" content="noindex" />
+<meta name="copyright" content="낯선대학y6">
+<meta name="subject" content="낯선대학y6" />
+<link rel="canonical" href="https://hi-stranger.yonghyun.kr/" />
+{% endblock %}
+
+{% block OpenGraph %}
+<meta property="og:url"           content="https://hi-stranger.yonghyun.kr/" />
+<meta property="og:type"          content="website" />
+<meta property="og:title"         content="낯선대학y6" />
+<meta property="og:description"   content="Hi, Stranger!" />
+<meta property="og:image"         content="https://hi-stranger.yonghyun.kr/static/img/og-image.png" />
+<meta property="og:image:secure_url"         content="https://hi-stranger.yonghyun.kr/static/img/og-image.png" />
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="낯선대학y6">
+<meta name="twitter:description" content="Hi, Stranger!">
+<meta name="twitter:image" content="https://hi-stranger.yonghyun.kr/static/img/og-image.png">
+{% endblock %}
+
+
+
+{% block head %}
+
+<script type="text/javascript" src="{{ url_for('static', filename='js/quietflow.js') }}"></script>
+
+{% endblock %}
+
+
+
+
+{% block contents %}
+
+<div class="main">
+  <div><a href="/"><img src="{{ url_for('static', filename='img/bi-logo.svg') }}"></a></div>
+  <div><img src="{{ url_for('static', filename='img/img-histranger.svg') }}"></div>
+  <div class="uk-flex uk-flex-center">
+    <a href="/login">
+    <div class="start uk-flex uk-flex-center uk-flex-middle">시작하기</div>
+    </a>
+  </div>
+</div>
+
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script>
+
+$("body").quietflow({
+  theme : "bouncingBalls",
+  bounceBallCount: 15,
+  bounceSpeed: 1,
+  maxRadius:90,
+  specificColors : [
+    "#466563",
+    "#62B777",
+    "#DDD94A",
+    "#D97C69",
+    "#D33733",
+    "#804595",
+    "#1A448C",
+    "#B51B80",
+    "#6CC1B8",
+    "#4C4B4C",
+    "#44A641"
+  ],
+})
+
+
+// "#4097D1",
+// "#40D1C8",
+// "#466563",
+// "#597FB8",
+// "#775749",
+// "#8BC0CD",
+// "#B1CAC8",
+// "#C8313F",
+// "#D5CAAF",
+// "#DFAAA8",
+// "#D97C69",
+// "#DDD94A",
+
+</script>
+
+{% endblock %}
+
+

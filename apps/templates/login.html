@@ -1,0 +1,116 @@
+{% extends 'layouts/standard.html' %}
+
+{% block title %}로그인하기{% endblock %}
+
+
+
+{% block head %}
+
+<!-- bootstrap-datepicker -->
+<!-- https://bootstrap-datepicker.readthedocs.io/ -->
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap-datepicker.min.css') }}">
+<script src="{{ url_for('static', filename='js/bootstrap-datepicker.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bootstrap-datepicker.ko.min.js') }}"></script>
+
+
+{% endblock %}
+
+
+
+
+{% block contents %}
+
+<main>
+    <div class="main-container">
+        <nav class="uk-navbar-container uk-navbar-transparent uk-margin" uk-navbar>
+            <div class="uk-navbar-left">
+                <a href="/"><img src="{{ url_for('static', filename='img/icon-back.svg') }}"></a>
+            </div>
+            <div class="uk-navbar-right">
+                <a href="/"><img src="{{ url_for('static', filename='img/icon-bi.svg') }}"></a>
+            </div>
+        </nav>
+
+        <div class="content">
+            <header>
+                <div class="title">로그인하기</div>
+            </header>
+
+            <div class="block-set">
+
+                <form method="post">
+
+                    <div class="block">
+                        <div class="label">핸드폰 번호를 입력해주세요.</div>
+                        <div class="uk-margin">
+                            <input class="uk-input input-login input-phone" name="phone" type="number" pattern="[0-9]*" inputmode="numeric" required placeholder="예) 01012341234"  maxlength="11" size="11" oninput="maxLengthCheck(this)" autofocus > 
+                        </div>
+                    </div>
+                    <div class="block">
+                        <div class="label">비밀번호 4자리를 입력해주세요.</div>
+                        <div class="sub-label">첫 로그인이라면, 앞으로 사용할 비밀번호를 입력해주세요.</div>
+                        <div class="uk-margin">
+                            <input class="uk-input input-login input-password" name="password" type="number" pattern="[0-9]*" inputmode="numeric" placeholder="비밀번호" style="-webkit-text-security:disc"  placeholder="예) 1234" maxlength="4" size="4" oninput="maxLengthCheck(this)" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="margin-top uk-button uk-button-yellow uk-width-1-1">로그인하기</button>
+                </form>
+
+
+            </div>
+        
+        </div>
+
+    </div>
+</main>
+
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script>
+
+
+$('#datePicker').datepicker({
+    format: "yyyy-mm-dd",
+    autoclose : true,
+    clearBtn : true,
+    language : "ko"
+});
+
+
+function maxLengthCheck(object){ 
+    if (object.value.length > object.maxLength){ 
+        object.value = object.value.slice(0, object.maxLength); 
+    } 
+}
+
+$(function() {
+    $(".input-phone").keydown(function(e) {
+		var charLimit = $(this).attr("maxlength");
+        var keys = [8, 9, /*16, 17, 18,*/ 19, 20, 27, 33, 34, 35, 36, 37, 38, 39, 40, 45, 46, 144, 145];
+
+        if ($.inArray(e.which, keys) >= 0) {
+            return true;
+        } else if (this.value.length >= charLimit) {
+            $('.input-password').focus();
+            return false;
+        } else if (e.shiftKey || e.which <= 47 || e.which >= 106) {
+            return false;
+        } else if (e.shiftKey || (e.which >= 58 && e.which <= 95)) {
+            return false;
+        }
+    }).keyup (function () {
+		var charLimit = $(this).attr("maxlength");
+        if (this.value.length >= charLimit) {
+            $('.input-password').focus();
+            return false;
+        }
+    });
+});
+
+</script>
+
+{% endblock %}

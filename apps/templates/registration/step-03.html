@@ -1,0 +1,79 @@
+{% extends 'layouts/registration.html' %}
+
+{% block title %}3/6 단계 - 낯선대학y6 입학식 사전 등록{% endblock %}
+
+
+
+{% block head %}
+
+
+{% endblock %}
+
+
+
+
+{% block contents %}
+
+<main>
+    <div class="main-container">
+    <nav class="uk-navbar-container uk-navbar-transparent uk-margin" uk-navbar>
+        <div class="uk-navbar-center">
+            <a href="/"><img src="{{ url_for('static', filename='img/bi-logo.svg') }}"></a>
+        </div>
+    </nav>
+
+    <form method="post" autocomplete=off>
+    <div class="content">
+        <div class="emoji">
+            <img src="{{ url_for('static', filename='img/icon-detective.png') }}">
+        </div>
+        <div class="text">
+            <p>이전에 작성한 내용이 맞는지<br>
+                확인 한번 해 볼게요.</p>
+            <p class="desc">혹시 잘못 입력했다면 수정하신 뒤, 다음 버튼을 눌러주세요.</p>
+        </div>
+        <div class="input">
+            <p class="label">성함</p>
+            <input id="input-check-1" class="input-check" name="name"  type="text" value="{{stranger.name}}" placeholder="예) 홍길동">
+        </div>
+        <div class="input">
+            <p class="label">이메일 주소</p>
+            <input id="input-check-2" class="input-check" name="email" type="email" value="{{stranger.email}}" placeholder="예) hi.stranger.y@gmail.com">
+        </div>
+    </div>
+
+
+    <button type="submit" class="next-btn">다음으로</button>
+
+</form>
+</div>
+
+</main>
+
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script>
+
+input_check();
+
+// input 비어있는지 확인
+$(".input-check").on('input',function(){
+	input_check();
+});
+
+function input_check() {
+    if($("#input-check-1").val()=='' || $("#input-check-2").val()==''){
+		// 비어있으면
+		$(".next-btn").hide();
+
+	}else{
+		$(".next-btn").show();
+	}
+}
+</script>
+
+{% endblock %}

@@ -1,0 +1,306 @@
+// out: ../css/system.css, sourcemap:false, compress:true
+/* Above comment is config of atom Less plugin*/
+
+@import (reference) 'include';
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
+@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+// @import url(//cdn.jsdelivr.net/font-kopub/1.0/kopubdotum.css);
+
+A:link { text-decoration:none; color:inherit; }
+A:visited { text-decoration:none; color:inherit; }
+A:active { text-decoration:none; color:inherit; }
+A:hover { text-decoration:none; color:inherit; span{text-decoration: none;}}
+A:focus, input:focus, button:focus { outline: none; }
+
+html { font-family: 'Spoqa Han Sans Neo', 'Noto Sans KR', sans-serif; }
+
+html, body {
+  width: 100%;
+  height: 100%;
+	margin: 0;
+	padding: 0;
+	word-break: break-all;
+	text-align: left;
+}
+body{
+	overflow-x: hidden;
+  letter-spacing: -0.1px;
+  line-height: 28px;
+	font-weight: @regular;
+	font-size: 14px;
+  color: @black;
+}
+p{
+  margin: 0.7em 0;
+}
+b{
+	font-weight: @bold;
+}
+
+hr{
+  margin: 0;
+  border-top: 2px solid;
+  border-color: @black;
+  &.thin{
+    border-top: 1px solid;
+  }
+}
+
+.overflow-y-hidden{
+  overflow-y: hidden;
+}
+.hide-sm{
+	display: block!important;
+	@media @-sm{
+		display: none!important;
+	}
+}
+.show-sm{
+	display: none!important;
+	@media @-sm{
+		display: block!important;
+	}
+}
+.hide-md{
+	display: block!important;
+	@media @-md{
+		display: none!important;
+	}
+}
+.show-md{
+	display: none!important;
+	@media @-md{
+		display: block!important;
+	}
+}
+
+.hide-xs{
+	display: block!important;
+	@media @-xs{
+		display: none!important;
+	}
+}
+.show-xs{
+	display: none!important;
+	@media @-xs{
+		display: block!important;
+	}
+}
+.clear{
+  clear: both;
+}
+.fixed{
+  position: fixed;
+}
+
+// alert style(messages)
+
+.messages{
+  text-align: center;
+  justify-content: center;
+  display: flex;
+}
+.alert {
+  position: absolute;
+  z-index: 9999999;
+  margin-top: 19px;
+  text-align: center;
+  font-size: @fs-xs;
+  display: inline-block;
+  padding: 8px 15px;
+  border: 0 solid transparent;
+  border-radius: 10px;
+}
+.alert-success {
+  color: @black;
+  background-color: @success;
+}
+.alert-info {
+  color: @black;
+  background-color: @info;
+}
+.alert-warning {
+  color: @black;
+  background-color: @warning;
+}
+.alert-danger {
+  color: @white;
+  background-color: @danger;
+}
+
+.shadow{
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+}
+
+.container-fullscreen{
+  width: 100%;
+  height: 100%;
+}
+
+
+
+
+
+
+
+// Datepicker standalone .less buildfile.  Includes all necessary mixins/variables/rules from bootstrap
+// and imports the included datepicker.less to output a minimal standalone datepicker.css
+//
+// Usage:
+//     lessc build_standalone.less datepicker.css
+//
+// Variables, mixins, and rules copied from bootstrap 2.0.2
+
+// Datepicker .less buildfile.  Includes select mixins/variables from bootstrap
+// and imports the included datepicker.less to output a minimal datepicker.css
+//
+// Usage:
+//     lessc build.less datepicker.css
+//
+// Variables and mixins copied from bootstrap 2.0.2
+
+// Variables
+@grayLight:             #999;
+@grayLighter:           #eee;
+@white:                 #fff;
+@linkColor:             #08c;
+@btnPrimaryBackground:  @linkColor;
+@orange:                #f89406;
+@infoBackground:        #d9edf7;
+@baseLineHeight:        18px;
+@baseBorderRadius:      4px;
+
+// Mixins
+
+// Border Radius
+.border-radius(@radius: 5px) {
+  -webkit-border-radius: @radius;
+     -moz-border-radius: @radius;
+          border-radius: @radius;
+}
+
+// Button backgrounds
+.buttonBackground(@startColor, @endColor) {
+  .gradientBar(@startColor, @endColor);
+  .reset-filter();
+  &:hover, &:active, &.active, &.disabled, &[disabled] {
+    background-color: @endColor;
+  }
+  &:active,
+  &.active {
+    background-color: darken(@endColor, 10%) e("\9");
+  }
+}
+
+// Reset filters for IE
+.reset-filter() {
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+}
+
+// Gradient Bar Colors for buttons and alerts
+.gradientBar(@primaryColor, @secondaryColor) {
+  #gradient > .vertical(@primaryColor, @secondaryColor);
+  border-color: @secondaryColor @secondaryColor darken(@secondaryColor, 15%);
+  border-color: rgba(0,0,0,.1) rgba(0,0,0,.1) fadein(rgba(0,0,0,.1), 15%);
+}
+
+// Gradients
+#gradient {
+  .vertical(@startColor: #555, @endColor: #333) {
+    background-color: mix(@startColor, @endColor, 60%);
+    background-image: -moz-linear-gradient(to bottom, @startColor, @endColor); // FF 3.6+
+    background-image: -ms-linear-gradient(to bottom, @startColor, @endColor); // IE10
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@startColor), to(@endColor)); // Safari 4+, Chrome 2+
+    background-image: -webkit-linear-gradient(to bottom, @startColor, @endColor); // Safari 5.1+, Chrome 10+
+    background-image: -o-linear-gradient(to bottom, @startColor, @endColor); // Opera 11.10
+    background-image: linear-gradient(to bottom, @startColor, @endColor); // The standard
+    background-repeat: repeat-x;
+    filter: e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=0)",@startColor,@endColor)); // IE9 and down
+  }
+}
+
+
+// Dropdown css
+
+@zindexDropdown:                1000;
+@grayDark:                      #333;
+@baseLineHeight:                20px;
+@tableBackground:               transparent; // overall background-color
+@dropdownBackground:            @white;
+@dropdownBorder:                rgba(0,0,0,.2);
+@dropdownLinkColor:             @grayDark;
+@dropdownLinkColorHover:        @white;
+@dropdownLinkBackgroundHover:   @linkColor;
+
+// Drop shadows
+.box-shadow(@shadow) {
+  -webkit-box-shadow: @shadow;
+     -moz-box-shadow: @shadow;
+          box-shadow: @shadow;
+}
+
+// The dropdown menu (ul)
+// ----------------------
+.datepicker{
+  &.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: @zindexDropdown;
+    float: left;
+    display: none; // none by default, but block on "open" of the menu
+    min-width: 160px;
+    list-style: none;
+    background-color: @dropdownBackground;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0,0,0,.2);
+    .border-radius(5px);
+    .box-shadow(0 5px 10px rgba(0,0,0,.2));
+    -webkit-background-clip: padding-box;
+       -moz-background-clip: padding;
+            background-clip: padding-box;
+    *border-right-width: 2px;
+    *border-bottom-width: 2px;
+
+    // Normally inherited from bootstrap's `body`
+    color: #333333;
+    font-size:13px;
+    line-height: @baseLineHeight;
+  }
+
+  &.dropdown-menu, &.datepicker-inline {
+    th, td {
+      padding: 4px 5px;
+    }
+  }
+}
+
+
+
+.loading-panel{
+  display: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 999;
+  width: 100vw;
+  height: 100vh;
+  height: -webkit-fill-available;
+  background-color: #ece6d9e6;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  .message{
+      margin-top: 20px;
+      font-weight: 500;
+      color: #000;
+  }
+}

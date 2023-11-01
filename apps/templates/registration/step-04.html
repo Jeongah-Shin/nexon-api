@@ -1,0 +1,127 @@
+{% extends 'layouts/registration.html' %}
+
+{% block title %}4/6 단계 - 낯선대학y6 입학식 사전 등록{% endblock %}
+
+
+
+{% block head %}
+
+
+{% endblock %}
+
+
+
+
+{% block contents %}
+
+<main>
+    <div class="main-container">
+    <nav class="uk-navbar-container uk-navbar-transparent uk-margin" uk-navbar>
+        <div class="uk-navbar-center">
+            <a href="/"><img src="{{ url_for('static', filename='img/bi-logo.svg') }}"></a>
+        </div>
+    </nav>
+
+    <form method="post" autocomplete=off>
+    <div class="content">
+        <div class="emoji">
+            <img src="{{ url_for('static', filename='img/icon-mage.png') }}">
+        </div>
+        <div class="text">
+            <p>낯선대학y6의 입학식 일정은 <br>
+                다음과 같아요.</p>
+        </div>
+        <div class="container">2021. 04. 02 (금) 20:00</div>
+        <div class="text spacer">
+            <p>잊지 않도록<br>
+                캘린더에 추가해주세요!</p>
+            <p class="desc">아래의 버튼을 눌러서 바로 추가해보세요.</p>
+        </div>
+        <div class="uk-grid-small uk-child-width-1-2" uk-grid>
+            <div>
+                <a href="https://calendar.google.com/calendar/u/0/r/eventedit?text=%EB%82%AF%EC%84%A0%EB%8C%80%ED%95%99y4%EC%9E%85%ED%95%99%EC%8B%9D&dates=20210402T110000Z/20210402T133000Z&location=%EC%98%A8%EB%9D%BC%EC%9D%B8" target="_blank">
+                    <div class="cal-btn container">구글캘린더</div>
+                </a>
+            </div>
+            <div>
+                <a href="{{ url_for('static', filename='event.ics') }}" target="_blank">
+                    <div class="cal-btn container">iCal</div>
+                </a>
+            </div>
+        </div>
+        <div class="text spacer">
+            <p>입학식 당일 참석이 가능하신가요?</p>
+            <p class="desc">입학식은 온라인으로 진행됩니다.<br>
+                웹캠이 있고 인터넷이 원활한 곳이라면 어디든지 괜찮아요.</p>
+        </div>
+        <div class="uk-grid-small uk-child-width-1-2" uk-grid>
+            <div>
+                <div class="cal-btn container attendance yes">참석 가능</div>
+            </div>
+            <div>
+                <div class="cal-btn container attendance no">참석 불가능</div>
+            </div>
+        </div>
+        <div class="emoji spacer">
+            <img src="{{ url_for('static', filename='img/icon-scientist.png') }}">
+        </div>
+        <div class="text">
+            <p>참고로 이번 낯선대학y6 입학식은<br>
+                색다른 방법으로 진행될 예정이에요.<br>
+                데스크탑(혹은 노트북)을 사용하시면<br>
+                입학식 참석이 훨씬 더 쉬워진답니다.</p>
+            <p class="desc">혹시, 데스크탑(혹은 노트북) 환경을 준비하기 어렵다면,<br>
+                낯선대학y6 스탭에게 문의해주세요.<br>
+                <a href="mailto:hi.stranger.y@gmail.com"><u>hi.stranger.y@gmail.com</u></a></p>
+        </div>
+    </div>
+    <input type="hidden" id="attendance_input" value="" name="attendance">
+    <button type="submit" class="next-btn hide">모든 사항을 확인했습니다.</button>
+
+</form>
+</div>
+
+</main>
+
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script>
+
+$('.attendance').click(function() {
+    $('.attendance').removeClass('active');
+    $(this).addClass('active');
+    $('.next-btn').removeClass('hide');
+});
+
+
+$('.attendance.yes').click(function() {
+    $('#attendance_input').val("yes");
+});
+$('.attendance.no').click(function() {
+    $('#attendance_input').val("no");
+});
+  
+{% if stranger.attendance == "yes" %}
+    $('.attendance').removeClass('active');
+    $('.attendance.yes').addClass('active');
+    $('#attendance_input').val("yes");
+{% elif stranger.attendance == "no" %}
+    $('.attendance').removeClass('active');
+    $('#attendance_input').val("no");
+    $('.attendance.no').addClass('active');
+{% endif %}
+
+
+{% if stranger.attendance %}
+    $('.next-btn').removeClass('hide');
+{% endif %}
+
+
+
+</script>
+
+{% endblock %}

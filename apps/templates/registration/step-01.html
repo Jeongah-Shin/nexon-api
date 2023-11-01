@@ -1,0 +1,72 @@
+{% extends 'layouts/registration.html' %}
+
+{% block title %}1/6 단계 - 낯선대학y6 입학식 사전 등록{% endblock %}
+
+
+
+{% block head %}
+
+
+{% endblock %}
+
+
+
+
+{% block contents %}
+
+<main>
+    <div class="main-container">
+        <nav class="uk-navbar-container uk-navbar-transparent uk-margin" uk-navbar>
+            <div class="uk-navbar-center">
+                <a href="/"><img src="{{ url_for('static', filename='img/bi-logo.svg') }}"></a>
+            </div>
+        </nav>
+
+
+        <form method="post" autocomplete=off>
+            
+
+            <div class="content">
+                <div class="emoji">
+                    <img src="{{ url_for('static', filename='img/icon-phone.png') }}">
+                </div>
+                <div class="text">
+                    <p>입학 신청서에 작성한<br>
+                        핸드폰 번호를 입력해주세요.</p>
+                </div>
+                <div class="input">
+                    <input name="phone" id="input-check" type="tel" 
+                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  placeholder="예) 01012341234" required>
+                </div>
+            </div>
+
+            <button type="submit" class="next-btn hide">다음으로</button>
+
+        </form>
+
+    </div>
+</main>
+
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script>
+
+
+// input 비어있는지 확인
+$("#input-check").on('input',function(){
+	if($("#input-check").val()==''){
+		// 비어있으면
+		$(".next-btn").hide();
+
+	}else{
+		$(".next-btn").show();
+	}
+});
+
+</script>
+
+{% endblock %}

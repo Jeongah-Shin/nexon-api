@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YY6MMHJ19Q"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-YY6MMHJ19Q');
+    </script>
+    
+    <title>{% block title %}{% endblock %}</title>
+    
+    {% block MetaTag %}{% endblock %}
+    {% block OpenGraph %}{% endblock %}
+
+    {% block layout_head %}{% endblock %}
+    {% block head %}{% endblock %}
+</head>
+<body>
+
+
+{% block layout %}{% endblock %}
+{% block scripts %}{% endblock %}
+
+<script>
+
+</script>
+
+</body>
+
+</html>

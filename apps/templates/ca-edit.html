@@ -1,0 +1,142 @@
+{% extends 'layouts/standard.html' %}
+
+{% block title %}모임 수정하기 - 낯선대학y6{% endblock %}
+
+
+
+{% block head %}
+
+<!-- bootstrap-datepicker -->
+<!-- https://bootstrap-datepicker.readthedocs.io/ -->
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap-datepicker.min.css') }}">
+<script src="{{ url_for('static', filename='js/bootstrap-datepicker.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bootstrap-datepicker.ko.min.js') }}"></script>
+
+
+{% endblock %}
+
+
+
+
+{% block contents %}
+
+
+<div class="loading-panel">
+    <div class="spinner">
+        <div uk-spinner="ratio: 2"></div>
+        <div class="message">잠시만 기다려주세요</div>
+    </div>
+</div>
+
+
+<main>
+    <div class="main-container">
+        <nav class="uk-navbar-container uk-navbar-transparent uk-margin" uk-navbar>
+            <div class="uk-navbar-left">
+                <a href="/ca/list"><img src="{{ url_for('static', filename='img/icon-back.svg') }}"></a>
+            </div>
+            <div class="uk-navbar-right">
+                <img class="menu-bi" type="button" src="{{ url_for('static', filename='img/icon-bi.svg') }}">
+                <div uk-dropdown="mode: click; pos: bottom-right">
+                    <ul class="uk-nav uk-dropdown-nav">
+                        <li><a href="/">첫 화면으로</a></li>
+                        <li class="uk-nav-divider"></li>
+                        <li><a href="/ca/list">모임 리스트로</a></li>
+                        <li><a href="/ca/create">모임 만들기</a></li>
+                        <li class="uk-nav-divider"></li>
+                        <li><a href="/network_stranger">네트워크 다이어그램</a></li>
+                        <li><a href="{{g.stranger_notion}}">나의 노션 페이지</a></li>
+                        <li class="uk-nav-divider"></li>
+                        <li><a href="/logout">로그아웃</a></li>
+                    </ul>
+                </div>
+        </nav>
+
+        <div class="content">
+            <header>
+                <div class="title">모임 수정하기</div>
+            </header>
+
+
+            <div class="block-set">
+
+                <form method="post" autocomplete=off   onsubmit="return loading();">
+
+                <div class="block">
+                    <div class="label">모임 이름</div>
+                    <div class="uk-margin">
+                        <input  class="uk-input" name="title" required type="text" placeholder="예) 성수동 브런치, 낯선세끼 등" value="{{ca.title}}">
+                    </div>
+                </div>
+                <div class="block">
+                    <div class="label">예상 모임 날짜</div>
+                    <div class="uk-margin">
+                        <input type="text" id="datePicker" class="uk-input form-control" name="date" required placeholder="날짜를 선택해주세요."  value="{%if ca.date%}{{ca.date.strftime('%Y-%m-%d')}}{%endif%}">
+                    </div>
+                </div>
+                <div class="block">
+                    <div class="label">최대 참여 인원</div>
+                    <div class="sub-label">정부 거리두기 정책에 준수하여 최대 참여 인원을 설정해주세요.</div>
+                    <div class="uk-margin">
+                        <input  class="uk-input" name="people" type="number" placeholder="예) 4 (숫자만 입력해주세요)" value="{{ca.people}}">
+                    </div>
+                </div>
+                <div class="block">
+                    <div class="label">개설자 한마디</div>
+                    <div class="sub-label">어떤 모임인지 설명해주세요.<br>모임 시간이 정해져있다면 여기에 작성해주세요.</div>
+                    <div class="uk-margin">
+                        <textarea required name="description" class="uk-textarea" rows="9" placeholder="여기에 내용을 입력해주세요.">{{ca.description}}</textarea>
+                    </div>
+                </div>
+
+                <button type="submit" class="uk-button uk-button-yellow uk-width-1-1">저장하기</button>
+
+                </form>
+
+            </div>
+        
+    </div>
+
+    </div>
+</main>
+
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script>
+
+
+$('#datePicker').datepicker({
+    format: "yyyy-mm-dd",
+    autoclose : true,
+    clearBtn : true,
+    language : "ko",
+    startDate: '+1d',
+});
+
+// $('#datePicker').datepicker('update', new Date());
+
+
+
+// input 비어있는지 확인
+$("#input-check").on('input',function(){
+	if($("#input-check").val()==''){
+		// 비어있으면
+		$(".next-btn").hide();
+
+	}else{
+		$(".next-btn").show();
+	}
+});
+
+
+function loading() {
+    $('.loading-panel').css('display','flex');
+}
+
+</script>
+
+{% endblock %}

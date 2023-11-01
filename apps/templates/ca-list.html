@@ -1,0 +1,215 @@
+{% extends 'layouts/standard.html' %}
+
+{% block title %}낯선대학y6{% endblock %}
+
+
+
+{% block head %}
+
+<!-- bootstrap-datepicker -->
+<!-- https://bootstrap-datepicker.readthedocs.io/ -->
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap-datepicker.min.css') }}">
+<script src="{{ url_for('static', filename='js/bootstrap-datepicker.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bootstrap-datepicker.ko.min.js') }}"></script>
+
+
+{% endblock %}
+
+
+
+
+{% block contents %}
+
+<main>
+    <div class="main-container">
+        <nav class="no-margin uk-navbar-container uk-navbar-transparent uk-margin" uk-navbar>
+           
+            <div class="uk-navbar-right">
+                <img class="menu-bi" type="button" src="{{ url_for('static', filename='img/icon-bi.svg') }}">
+                <div uk-dropdown="mode: click; pos: bottom-right">
+                    <ul class="uk-nav uk-dropdown-nav">
+                        <li><a href="/">첫 화면으로</a></li>
+                        <li class="uk-nav-divider"></li>
+                        <li><a href="/ca/list">모임 리스트로</a></li>
+                        <li><a href="/ca/create">모임 만들기</a></li>
+                        <li class="uk-nav-divider"></li>
+                        <li><a href="/network_stranger">네트워크 다이어그램</a></li>
+                        <li><a href="{{g.stranger_notion}}">나의 노션 페이지</a></li>
+                        <li class="uk-nav-divider"></li>
+                        <li><a href="/logout">로그아웃</a></li>
+                    </ul>
+                </div>
+
+            </div>
+        </nav>
+
+        <div class="content">
+            <header>
+                <div class="emoji">
+                    <img src="{{ url_for('static', filename='img/icon-waving-hand.png') }}">
+                </div>
+                <div class="title">안녕하세요, {{stranger.name}}님!</div>
+                <div class="desc">
+                    <div>모임을 만들어서 멤버들을 만나보세요.</div>
+                </div>
+                {% if g.stranger_position == "staff" %}
+                <div class="block header-block">
+                    <div class="ca-participate">
+                        <div class="card-desc">{{stranger.name}}님은 낯선대학y6 스탭입니다.<br>
+                        스탭은 모든 모임의 참여 신청 취소 권한이 있습니다.</div>
+                        <div class="card-desc"><a href="/network_stranger">[ 네트워크 다이어그램 보기 ]</a></div>
+                    </div>
+                </div>
+                {% endif %}
+                <div class="block header-block">
+                    <div class="label">나의 모임 참여 현황</div>
+                    <div class="uk-child-width-1-2 uk-grid-small participate-cards" uk-grid>
+                        <div>
+                            <div class="ca-participate">
+                                <div class="card-title">대기중인 모임</div>
+                                <div class="card-count">{{my_participate.ongoing}}</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="ca-participate">
+                                <div class="card-title">종료된 모임</div>
+                                <div class="card-count">{{my_participate.close}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="desc">* {{stranger.name}}님은 낯선대학y6 스탭입니다.</div> -->
+            </header>
+
+            <hr class="block-hr">
+
+            <div class="block-set">
+
+                {% set day = ['월', '화', '수', '목', '금', '토', '일'] %}
+               
+                <div class="block">
+                    {% if ca_ongoing %}
+                    <div class="label">지금 모집 중</div>
+                    <div class="uk-margin ca-cards">
+
+                            {% for ca in ca_ongoing %}
+    
+                                <a href="/ca/{{ca[0].id}}">
+                                    <div class="ca-card">
+                                        <div class="title-line">
+                                            <div class="title">{{ca[0].title}}</div>
+                                            <div class="tags">
+                                                <span class="uk-label uk-label-red">모집중</span>
+                                            </div>
+                                        </div>
+                                        <div class="info-line">
+                                            <div class="date">{{ca[0].date.strftime('%Y-%m-%d')}} ({{ day[ca[0].date.weekday()] }})</div>
+                                            <div class="people">{{ca[1]}}/{{ca[0].people}}명</div>
+                                        </div>
+                                    </div>
+                                </a>
+                    
+                            {% endfor %}
+                        {% endif %}
+
+                    </div>
+
+
+                <div class="block">
+                    {% if ca_close %}
+                    <div class="label">모집 완료</div>
+                    <div class="uk-margin ca-cards">
+
+                            {% for ca in ca_close %}
+    
+                                <a href="/ca/{{ca[0].id}}">
+                                    <div class="ca-card">
+                                        <div class="title-line">
+                                            <div class="title">{{ca[0].title}}</div>
+                                            <div class="tags">
+                                                <span class="uk-label uk-label-green">모집완료</span>
+                                            </div>
+                                        </div>
+                                        <div class="info-line">
+                                            <div class="date">{{ca[0].date.strftime('%Y-%m-%d')}} ({{ day[ca[0].date.weekday()] }})</div>
+                                            <div class="people">{{ca[1]}}/{{ca[0].people}}명</div>
+                                        </div>
+                                    </div>
+                                </a>
+                    
+                            {% endfor %}
+                        {% endif %}
+
+                    </div>
+                </div>
+
+                <a href="/ca/create">
+                    <button class="ca-create uk-button uk-button-green uk-width-1-1">새로운 모임 만들기</button>
+                </a>
+
+                <div class="block">
+                    {% if ca_done %}
+                    <div class="label">종료된 모임</div>
+                    <div class="uk-margin ca-cards">
+
+                            {% for ca in ca_done %}
+    
+                                <a href="/ca/{{ca[0].id}}">
+                                    <div class="ca-card">
+                                        <div class="title-line">
+                                            <div class="title">{{ca[0].title}}</div>
+                                            <div class="tags">
+                                                <span class="uk-label uk-label-grey">종료</span>
+                                            </div>
+                                        </div>
+                                        <div class="info-line">
+                                            <div class="date">{{ca[0].date.strftime('%Y-%m-%d')}} ({{ day[ca[0].date.weekday()] }})</div>
+                                            <div class="people">{{ca[1]}}/{{ca[0].people}}명</div>
+                                        </div>
+                                    </div>
+                                </a>
+                    
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        
+    </div>
+
+    </div>
+</main>
+
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script>
+
+
+$('#datePicker').datepicker({
+    format: "yyyy-mm-dd",
+    autoclose : true,
+    clearBtn : true,
+    language : "ko"
+});
+
+
+
+
+// input 비어있는지 확인
+$("#input-check").on('input',function(){
+	if($("#input-check").val()==''){
+		// 비어있으면
+		$(".next-btn").hide();
+
+	}else{
+		$(".next-btn").show();
+	}
+});
+
+</script>
+
+{% endblock %}

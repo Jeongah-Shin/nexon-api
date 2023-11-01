@@ -1,0 +1,301 @@
+{% extends 'layouts/standard.html' %}
+
+
+{% block title %}{{ca.title}} - 낯선대학y6{% endblock %}
+
+
+{% block MetaTag %}
+<meta name="title" content="{{ca.title}} - 낯선대학y6">
+<meta name="description" content="{{ca.description}}">
+<meta name="author" content="낯선대학y6">
+<meta name="robots" content="noindex" />
+<meta name="copyright" content="낯선대학y6">
+<meta name="subject" content="낯선대학y6" />
+<link rel="canonical" href="https://hi-stranger.yonghyun.kr/" />
+{% endblock %}
+
+{% block OpenGraph %}
+<meta property="og:url"           content="https://hi-stranger.yonghyun.kr/ca/{{ca.id}}" />
+<meta property="og:type"          content="website" />
+<meta property="og:title"         content="{{ca.title}} - 낯선대학y6" />
+<meta property="og:description"   content="{{ca.description}}" />
+<meta property="og:image"         content="https://hi-stranger.yonghyun.kr/static/img/og-image.png" />
+<meta property="og:image:secure_url"         content="https://hi-stranger.yonghyun.kr/static/img/og-image.png" />
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ca.title}} - 낯선대학y6">
+<meta name="twitter:description" content="{{ca.description}}">
+<meta name="twitter:image" content="https://hi-stranger.yonghyun.kr/static/img/og-image.png">
+{% endblock %}
+
+{% block head %}
+
+<!-- bootstrap-datepicker -->
+<!-- https://bootstrap-datepicker.readthedocs.io/ -->
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap-datepicker.min.css') }}">
+<script src="{{ url_for('static', filename='js/bootstrap-datepicker.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bootstrap-datepicker.ko.min.js') }}"></script>
+
+<!-- autolink -->
+<script src="{{ url_for('static', filename='js/autolink-min.js') }}"></script>
+
+{% endblock %}
+
+
+
+
+{% block contents %}
+
+
+<div class="loading-panel">
+    <div class="spinner">
+        <div uk-spinner="ratio: 2"></div>
+        <div class="message">잠시만 기다려주세요</div>
+    </div>
+</div>
+
+
+<main>
+    <div class="main-container">
+        <nav class="uk-navbar-container uk-navbar-transparent uk-margin" uk-navbar>
+            <div class="uk-navbar-left">
+                <a href="/ca/list"><img src="{{ url_for('static', filename='img/icon-back.svg') }}"></a>
+            </div>
+            <div class="uk-navbar-right">
+                <img class="menu-bi" type="button" src="{{ url_for('static', filename='img/icon-bi.svg') }}">
+                <div uk-dropdown="mode: click; pos: bottom-right">
+                    <ul class="uk-nav uk-dropdown-nav">
+                        <li><a href="/">첫 화면으로</a></li>
+                        <li class="uk-nav-divider"></li>
+                        <li><a href="/ca/list">모임 리스트로</a></li>
+                        <li><a href="/ca/create">모임 만들기</a></li>
+                        <li class="uk-nav-divider"></li>
+                        <li><a href="/network_stranger">네트워크 다이어그램</a></li>
+                        <li><a href="{{g.stranger_notion}}">나의 노션 페이지</a></li>
+                        <li class="uk-nav-divider"></li>
+                        <li><a href="/logout">로그아웃</a></li>
+                    </ul>
+                </div>
+        </nav>
+
+        <div class="content">
+            <header>
+                {% set day = ['월', '화', '수', '목', '금', '토', '일'] %}
+                <div class="tags">
+
+                    {% if today.strftime('%Y-%m-%d') > ca.date.strftime('%Y-%m-%d') %}
+                    <span class="uk-label uk-label-grey">종료</span>
+                    {% else %}
+                        {% if count >= ca.people %}
+                        <span class="uk-label uk-label-green">모집완료</span>
+                        {% else %}
+                        <span class="uk-label uk-label-red">모집중</span>
+                        {% endif %}
+                    {% endif %}
+
+
+<!--                     
+                    <span class="uk-label uk-label-red">모집중</span>
+                    <span class="uk-label uk-label-green">모집완료</span>
+                    <span class="uk-label uk-label-grey">종료</span>
+                    <span class="uk-label uk-label-blue">지원금</span> -->
+                </div>
+                <div class="title">{{ca.title}}</div>
+                <div class="desc">
+                {% if today.strftime('%Y-%m-%d') < ca.date.strftime('%Y-%m-%d') %}
+                    모임 예정일까지 <u>{{remain_day}}</u> 남았습니다.
+                {% elif today.strftime('%Y-%m-%d') == ca.date.strftime('%Y-%m-%d') %}
+                    오늘이 모임 예정일입니다.
+                {% endif %}
+            </div>
+            </header>
+
+
+            <div class="block-set">
+
+                <div class="block">
+                    <div class="label">모임 예정일</div>
+                    <div class="uk-margin">
+                        <div class="inner-block">{{ca.date.strftime('%Y-%m-%d')}} ({{ day[ca.date.weekday()] }})</div>
+                    </div>
+                </div>
+                <div class="block">
+                    <div class="label">개설자 {{ca.stranger.name}}님의 한마디</div>
+                    <div class="uk-margin">
+                        <div class="inner-block ca-description"></div>
+                        <script>
+                            var ca_description = {{ca.description|tojson}}
+                            $('.ca-description').html(ca_description.autoLink({ target: "_blank"}));
+
+                        </script>
+                    </div>
+                </div>
+
+                <div class="block">
+                    <div class="label">참여자</div>
+                    <div class="sub-label">최대 참여 인원 : {{ca.people}}명</div>
+                    <div class="uk-margin">
+                            <div class="participant-box">
+
+
+                                {% if participants %}
+                                    {% for participant in participants %} 
+                                                
+                                    
+                                        <div class="participant">
+                                            {% if ((ca.stranger_id == g.stranger_id and participant.stranger.id != g.stranger_id) or (g.stranger_position == "staff")) and (ca.stranger_id != participant.stranger.id) %}
+                                                <div class="delete-btn" onclick="ca_unjoin({{participant.stranger.id}},'{{participant.stranger.name}}')">
+                                                    <span uk-icon="icon: close; ratio: 0.8"></span>
+                                                </div>
+                                            {% endif %}
+                                            <a href="{{participant.stranger.notion_url}}">
+                                                <span class="name">{{participant.stranger.name}}</span>
+                                            </a>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+
+                            </div>
+                    </div>
+                </div>
+
+                
+
+
+                {% if not today.strftime('%Y-%m-%d') > ca.date.strftime('%Y-%m-%d') %}
+
+                    {% if my_status %}
+                    <!-- onclick="ca_unjoin()" -->
+                        {% if ca.stranger_id != g.stranger_id %}
+                        <button class="uk-button uk-button-grey uk-width-1-1">참여 신청 완료</button>
+                        {% else %}
+
+                        <div class="sub-label">개설자는 모임 참여 취소가 불가능합니다.</div>
+                        {% endif %}
+
+                    {% elif count >= ca.people %}
+
+                    <button class="uk-button uk-button-grey uk-width-1-1">모집종료</button>
+
+                    {% else %}
+                    <button class="uk-button uk-button-yellow uk-width-1-1" onclick="ca_join()">참여하기</button>
+                    {% endif %}
+                
+                {% endif %}
+
+
+                {% if ca.stranger_id == g.stranger_id and today.strftime('%Y-%m-%d') <= ca.date.strftime('%Y-%m-%d')%}
+
+                <button class="uk-button uk-button-red uk-width-1-1" onclick="ca_delete()">모임 삭제하기</button>
+
+                <a href="/ca/edit/{{ca.id}}">
+                    <button class="uk-button uk-button-green uk-width-1-1" onclick="ca_edit()">모임 수정하기</button>
+                </a>
+                {% endif %}
+
+            </div>
+        
+        </div>
+    </div>
+</main>
+
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script>
+
+// 참여신청하기
+function ca_join() {
+
+
+    message = "이 모임에 참여 신청하시겠습니까? \n신청 취소는 불가능하며, 취소하려면 개설자에게 요청해야합니다."
+    if (confirm(message) == true){   
+        $('.loading-panel').css('display','flex'); 
+        $.ajax({
+            url: '/ca/join',
+            type : 'POST',
+            dataType: 'JSON',
+            data: { 
+                ca_id: {{ca.id}},
+                stranger_id: {{g.stranger_id}},
+            },
+            success: function(data) {
+            location.reload();
+            alert('신청이 완료되었습니다.')
+            },
+            error: function(request,status,error){
+                alert("이미 참여 신청을 하신 것 같아요.");
+            }
+        });
+    }else{   //취소
+        return false;
+    }
+
+
+	
+}
+
+// 참여취소하기
+function ca_unjoin(user_id, user_name) {
+
+    message = user_name+"님의 참여신청을 취소하시겠습니까?"
+    if (confirm(message) == true){    
+        $.ajax({
+            url: '/ca/unjoin',
+            type : 'POST',
+            dataType: 'JSON',
+            data: { 
+                ca_id: {{ca.id}},
+                stranger_id: user_id,
+            },
+            success: function(data) {
+                location.reload();
+                alert(user_name+'님의 참여 신청이 취소되었습니다.')
+            },
+            error: function(request,status,error){
+                location.reload();
+                alert("이미 취소가 된 것 같아요. \n혹시 오류가 있다면 스탭에게 문의해주세요.");
+            }
+        });
+    }else{   //취소
+        return false;
+    }
+}
+
+
+// 모임 삭제하기
+function ca_delete() {
+    message = "이 모임을 정말 삭제하시겠습니까? \n이 선택은 되돌릴 수 없습니다."
+    if (confirm(message) == true){    
+        $.ajax({
+            url: '/ca/delete',
+            type : 'POST',
+            dataType: 'JSON',
+            data: { 
+                ca_id: {{ca.id}},
+                stranger_id: {{g.stranger_id}},
+            },
+            success: function(data) {
+                location.href = "/ca/list";
+                alert('모임이 삭제되었습니다.')
+            },
+            error: function(request,status,error){
+                location.reload();
+                alert("문제가 발생했습니다. 스탭에게 문의해주세요.");
+            }
+        });
+    }else{   //취소
+        return false;
+    }
+}
+
+
+
+
+
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,132 @@
+{% extends 'layouts/standard.html' %}
+
+{% block title %}{{ca.title}} - 낯선대학y6{% endblock %}
+
+
+
+{% block head %}
+
+<!-- bootstrap-datepicker -->
+<!-- https://bootstrap-datepicker.readthedocs.io/ -->
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap-datepicker.min.css') }}">
+<script src="{{ url_for('static', filename='js/bootstrap-datepicker.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bootstrap-datepicker.ko.min.js') }}"></script>
+
+
+{% endblock %}
+
+
+
+
+{% block contents %}
+
+<main>
+    <div class="main-container">
+        <nav class="uk-navbar-container uk-navbar-transparent uk-margin" uk-navbar>
+            <div class="uk-navbar-left">
+                <a href="/ca/list"><img src="{{ url_for('static', filename='img/icon-back.svg') }}"></a>
+            </div>
+            <div class="uk-navbar-right">
+                <img class="menu-bi" type="button" src="{{ url_for('static', filename='img/icon-bi.svg') }}">
+                <div uk-dropdown="mode: click; pos: bottom-right">
+                    <ul class="uk-nav uk-dropdown-nav">
+                        <li><a href="/">첫 화면으로</a></li>
+                        <li class="uk-nav-divider"></li>
+                        <li><a href="/ca/list">모임 리스트로</a></li>
+                        <li><a href="/ca/create">모임 만들기</a></li>
+                        <li class="uk-nav-divider"></li>
+                        <li><a href="/network_stranger">네트워크 다이어그램</a></li>
+                        <li><a href="{{g.stranger_notion}}">나의 노션 페이지</a></li>
+                        <li class="uk-nav-divider"></li>
+                        <li><a href="/logout">로그아웃</a></li>
+                    </ul>
+                </div>
+        </nav>
+
+        <div class="content">
+
+            <div class="party">
+                <img src="{{ url_for('static', filename='img/icon-party.png') }}">
+                <div class="title">모임이 만들어졌습니다!</div>
+                <div class="sub-title">멤버들에게 모임 개설 소식을<br>이메일로 알려드렸어요!</div>
+            </div>
+
+
+            {% set day = ['월', '화', '수', '목', '금', '토', '일'] %}
+            <div class="block-set">
+
+                <div class="block">
+                    <div class="label">모임 이름</div>
+                    <div class="uk-margin">
+                        <div class="inner-block">{{ca.title}}</div>
+                    </div>
+                </div>
+                <div class="block header-block">
+                    <div class="uk-child-width-1-2 uk-grid-small participate-cards" uk-grid>
+                        <div>
+                            <div class="label">모임 예정일</div>
+                            <div class="uk-margin">
+                                <div class="inner-block">{{ca.date.strftime('%Y-%m-%d')}} ({{ day[ca.date.weekday()] }})</div>
+                            </div>
+                        </div>
+                        <div>
+                                    
+                            <div class="label">최대 참여 인원</div>
+                            <div class="uk-margin">
+                                <div class="inner-block">{{ca.people}}명</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="block">
+                    <div class="label">개설자의 한마디</div>
+                    <div class="uk-margin">
+                        <div class="inner-block">{{ca.description}}</div>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="block button-set">
+                
+                <button class="copy_url uk-button uk-button-green uk-width-1-1"><span uk-icon="icon: copy; ratio: 0.9"></span><span>공유용 URL 복사하기</span></button>
+                <a href="/ca/{{ca.id}}">
+                    <button class="uk-button uk-button-yellow uk-width-1-1">생성된 모임 페이지로 가기</button>
+                </a>
+
+                <input type="text" id="copy_url">
+            </div>
+
+
+        </div>
+        
+    </div>
+</main>
+
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script>
+
+
+$('.copy_url').click(function(){
+    var obShareUrl = document.getElementById("copy_url");
+    obShareUrl.value = "https://hi-stranger.yonghyun.kr/ca/{{ca.id}}";  // 복사될 텍스트를 세팅해 줍니다.
+    obShareUrl.select();  // 해당 값이 선택되도록 select() 합니다
+    document.execCommand("copy"); // 클립보드에 복사합니다.
+    obShareUrl.blur(); // 선택된 것을 다시 선택안된것으로 바꿈니다.
+
+    alert('URL이 클립보드에 복사되었습니다.')
+    
+});
+
+
+
+</script>
+
+{% endblock %}

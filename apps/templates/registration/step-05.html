@@ -1,0 +1,99 @@
+{% extends 'layouts/registration.html' %}
+
+{% block title %}5/6 단계 - 낯선대학y6 입학식 사전 등록{% endblock %}
+
+
+
+{% block head %}
+
+<script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script>
+
+{% endblock %}
+
+
+
+
+{% block contents %}
+
+<main>
+    <div class="main-container">
+    <nav class="uk-navbar-container uk-navbar-transparent uk-margin" uk-navbar>
+        <div class="uk-navbar-center">
+            <a href="/"><img src="{{ url_for('static', filename='img/bi-logo.svg') }}"></a>
+        </div>
+    </nav>
+
+    <form method="post" autocomplete=off>
+    <div class="content padding-bottom-init">
+        <div class="emoji">
+            <img src="{{ url_for('static', filename='img/icon-artist.png') }}">
+        </div>
+        <div class="text">
+            <p>{{stranger.name}}님을 가장 잘 표현하는 컬러는<br>
+                무엇인가요?</p>
+            <p class="desc">아래의 컬러 차트에서 원하는 컬러를 골라주세요.</p>
+        </div>
+    </div>
+
+    <div class="color-box uk-flex uk-flex-center uk-flex-middle">
+        <div id="picker"></div>
+    </div>
+
+    <div class="content color-input input">
+        <input id="input-check" class="input-check" name="color" type="text" value="{{stranger.color}}" placeholder="예) #ffffff">
+    </div>
+
+    <button type="submit" class="next-btn hide">다음으로</button>
+
+</form>
+</div>
+
+</main>
+
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script>
+
+
+var colorPicker = new iro.ColorPicker("#picker", {
+  // Set the size of the color picker
+  width: 280,
+
+    {% if stranger.color %}
+    color: "{{stranger.color}}"
+    {% endif %}
+
+});
+// listen to a color picker's color:change event
+// color:change callbacks receive the current color
+colorPicker.on('color:change', function(color) {
+    color_change();
+    $('.next-btn').removeClass('hide');
+});
+
+color_change();
+
+function color_change() {
+    var hex = colorPicker.color.hexString;
+    $('.color-box').css('border-color',hex);
+    $('.color-input input').val(hex);
+    $('.next-btn').css('background-color',hex);
+};
+
+{% if stranger.color %}
+    $('.next-btn').removeClass('hide');
+{% endif %}
+
+
+$("#input-check").on('input',function(){
+    var changed_color = $('#input-check').val();
+    $('.next-btn').removeClass('hide');
+    colorPicker.color.hexString = changed_color;
+});
+</script>
+
+{% endblock %}

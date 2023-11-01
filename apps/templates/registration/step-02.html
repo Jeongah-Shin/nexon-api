@@ -1,0 +1,58 @@
+{% extends 'layouts/registration.html' %}
+
+{% block title %}2/6 단계 - 낯선대학y6 입학식 사전 등록{% endblock %}
+
+
+
+{% block head %}
+
+
+{% endblock %}
+
+
+
+
+{% block contents %}
+
+<main>
+    <div class="main-container">
+    <nav class="uk-navbar-container uk-navbar-transparent uk-margin" uk-navbar>
+        <div class="uk-navbar-center">
+            <a href="/"><img src="{{ url_for('static', filename='img/bi-logo.svg') }}"></a>
+        </div>
+    </nav>
+
+    <form method="post" autocomplete=off>
+
+        <div class="content">
+            <div class="emoji">
+                <img src="{{ url_for('static', filename='img/icon-smile.png') }}">
+            </div>
+            <div class="text">
+                <p>안녕하세요, {{stranger.name}}님! <br>
+                    반갑습니다!!</p>
+                <p>먼저,<br>
+                    <u>개인정보제공 및 초상권 활용</u>에<br>
+                    동의해주시겠어요?</p>
+                <p class="desc">낯선대학y는 커뮤니티의 구성을 위해 여러분의 개인정보 중 일부를 수집할 예정입니다. 성함 · 생년월일 · 이메일주소 · 연락처 · 직장 정보가 이에 해당하며, 이 정보는 절대 외부로 공유되지 않습니다.</p>
+            </div>
+        </div>
+
+        <button type="submit" class="next-btn">동의합니다</button>
+
+        </form>
+    </div>
+
+</main>
+
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script>
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends 'layouts/registration.html' %}
+
+{% block title %}6/6 단계 - 낯선대학y6 입학식 사전 등록{% endblock %}
+
+
+
+{% block head %}
+
+
+{% endblock %}
+
+
+
+
+{% block contents %}
+
+<main>
+    <div class="main-container">
+        <nav class="uk-navbar-container uk-navbar-transparent uk-margin" uk-navbar>
+            <div class="uk-navbar-center">
+                <a href="/"><img src="{{ url_for('static', filename='img/bi-logo.svg') }}"></a>
+            </div>
+        </nav>
+
+        <form method="post" autocomplete=off>
+        <div class="content">
+            <div class="emoji">
+                <img src="{{ url_for('static', filename='img/icon-artist.png') }}">
+            </div>
+            <div class="text">
+                <p>마지막으로 곧 만나게 될 낯선대학y6<br>
+                    친구들을 위해 {{stranger.name}}님을 간단히 <br>
+                    소개해 주세요.</p>
+                <p class="desc">아래의 링크를 통해 노션 페이지에 접속하여 소개글을 작성해 주세요.</p>
+                <a href="{%if stranger.notion_url%}{{stranger.notion_url}}{%else%}#{%endif%}" target="_blank"><div class="container ">
+                    <span>{{stranger.name}}님의 소개 페이지</span>
+                    <span uk-icon="icon: link; ratio: 1.4"></span>
+                </div></a>
+            </div>
+            <div class="emoji spacer">
+                <img src="{{ url_for('static', filename='img/icon-hands.png') }}">
+            </div>
+            <div class="text">
+                <p>2021. 03. 28 (일) 까지<br>
+                    작성을 부탁드려요.</p>
+                <p class="desc">이전에 작성한 내용(이름, 이메일, 참석 여부, 컬러 등)을 수정하려면 뒤로 가거나 전화번호 인증단계부터 다시 시작해주세요.<br>3월 28일 일요일까지는 언제든지 수정하셔도 괜찮습니다.</p>
+            </div>
+            <div class="emoji spacer">
+                <img src="{{ url_for('static', filename='img/icon-wink.png') }}">
+            </div>
+            <div class="text">
+                <p>지금까지 입학 절차를 따라 오시느라<br>고생하셨습니다! </p>
+                <p>우리 곧, 만나요!</p>
+            </div>
+        </div>
+
+
+        <button type="submit" class="next-btn relative">끝내기</button>
+
+    </form>
+    </div>
+</main>
+
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script>
+
+</script>
+
+{% endblock %}
